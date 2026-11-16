@@ -6,21 +6,30 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout
+        uses: name: Build iOS IPA
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Install XcodeGen
-        run: brew install xcodegen
+      - name: Install XcodeGen and CocoaPods
+        run: |
+          brew install xcodegen
+          gem install cocoapods
 
       - name: Generate Xcode Project
         run: xcodegen generate
 
-      - name: Resolve Swift Packages
-        run: |
-          xcodebuild -project DexterVN.xcodeproj -scheme DexterVN -resolvePackageDependencies
+      - name: Install Pods
+        run: pod install
 
       - name: Build App
         run: |
-          xcodebuild -project DexterVN.xcodeproj -scheme DexterVN -sdk iphoneos -configuration Release CODE_SIGNING_ALLOWED=NO build
+          xcodebuild -workspace DexterVN.xcworkspace -scheme DexterVN -sdk iphoneos -configuration Release CODE_SIGNING_ALLOWED=NO build
 
       - name: Package IPA
         run: |
