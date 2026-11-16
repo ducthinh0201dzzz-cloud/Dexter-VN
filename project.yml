@@ -1,0 +1,31 @@
+name: DexterVN
+options:
+  bundleIdPrefix: com.dextervn
+  deploymentTarget:
+    iOS: "16.0"
+packages:
+  Firebase:
+    url: https://github.com/firebase/firebase-ios-sdk
+    from: 10.0.0
+targets:
+  DexterVN:
+    type: application
+    platform: iOS
+    sources:
+      - path: .
+        excludes:
+          - "*.md"
+          - "*.yml"
+    resources:
+      - path: GoogleService-Info.plist
+    settings:
+      base:
+        INFOPLIST_FILE: ""
+        GENERATE_INFOPLIST_FILE: YES
+        PRODUCT_BUNDLE_IDENTIFIER: com.dextervn.app
+        HEADER_SEARCH_PATHS: "$(SRCROOT)/**"
+    dependencies:
+      - package: Firebase
+        product: FirebaseCore
+      - package: Firebase
+        product: FirebaseFirestore
